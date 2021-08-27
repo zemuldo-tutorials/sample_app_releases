@@ -2,7 +2,7 @@ defmodule SampleAppReleases do
   use GenServer
 
   def start_link(_) do
-    GenServer.start_link(__MODULE__, [])
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   @impl true
@@ -20,5 +20,9 @@ defmodule SampleAppReleases do
   def handle_info(:update, _state) do
     Process.send_after(self(), :update, 1000)
     {:noreply, DateTime.utc_now()} |> IO.inspect()
+  end
+
+  def ge_current_date() do
+    GenServer.call(__MODULE__, :get)
   end
 end
